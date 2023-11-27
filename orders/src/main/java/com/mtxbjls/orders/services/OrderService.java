@@ -1,8 +1,6 @@
 package com.mtxbjls.orders.services;
 
-import com.mtxbjls.orders.model.dtos.BaseResponse;
-import com.mtxbjls.orders.model.dtos.OrderItemRequest;
-import com.mtxbjls.orders.model.dtos.OrderRequest;
+import com.mtxbjls.orders.model.dtos.*;
 import com.mtxbjls.orders.model.entities.Order;
 import com.mtxbjls.orders.model.entities.OrderItem;
 import com.mtxbjls.orders.repositories.OrderRepository;
@@ -10,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -50,4 +49,26 @@ public class OrderService {
                 .build();
     }
 
+    public List<OrderResponse> getAllOrders() {
+        List<Order> orders = this.orderRepository.findAll();
+        return orders.stream().map(this::mapToOrderResponse).toList();
+    }
+
+    public OrderResponse mapToOrderResponse(Order order){
+        return new OrderResponse(
+                order.getId(),
+                order.getOrderNumber(),
+                order.getOrderItems().stream()
+                        .map(this::mapToOrderItemResponse)
+                        .toList());
+    }
+
+    public OrderItemResponse mapToOrderItemResponse(OrderItem orderItem){
+        return new OrderItemResponse(
+                orderItem.getId(),
+                orderItem.getSku(),
+                orderItem.getPrice(),
+                orderItem.getQuantity()
+        );
+    }
 }
