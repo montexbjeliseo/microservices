@@ -15,9 +15,12 @@
 	<name>microservices</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
+		<spring-cloud.version>2023.0.0-RC1</spring-cloud.version>
+		<!--spring-cloud.version>2022.0.4</spring-cloud.version-->
 		<java.version>17</java.version>
 	</properties>
 	<modules>
+		<module>apigateway</module>
 		<module>inventory</module>
 		<module>orders</module>
 		<module>products</module>
@@ -26,10 +29,33 @@
 		 
 	</dependencies>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<build>
 		<plugins>
 			
 		</plugins>
 	</build>
+
+	<repositories>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 
 </project>
